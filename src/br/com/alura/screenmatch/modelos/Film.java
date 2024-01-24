@@ -1,62 +1,29 @@
 package br.com.alura.screenmatch.modelos;
 
-public class Film {
-    private String name;
-    private int releaseYear;
-    private boolean planIncluded;
-    private double addReviews;
-    private int totalReviews;
-    private int durationMinutes;
+import br.com.alura.screenmatch.calculos.Classifiable;
 
-    public String getName() {
-        return name;
+public class Film extends Titulo implements Classifiable {
+    private String diretor;
+
+    public Film(String name, int releaseYear) {
+        super(name, releaseYear);
     }
 
-    public int getReleaseYear() {
-        return releaseYear;
+    public String getDiretor() {
+        return diretor;
     }
 
-    public boolean isPlanIncluded() {
-        return planIncluded;
+    public void setDiretor(String diretor) {
+        this.diretor = diretor;
     }
 
-    public int getDurationMinutes() {
-        return durationMinutes;
+    @Override
+    public int getClassifiabe() {
+        return (int)takeMedia()/2;
     }
 
-    public int getTotalReviews(){
-        return totalReviews;
+    @Override
+    public String toString() {
+        return "Filme: " + this.getName() + " (" + this.getReleaseYear() + ")";
     }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setReleaseYear(int releaseYear) {
-        this.releaseYear = releaseYear;
-    }
-
-    public void setPlanIncluded(boolean planIncluded) {
-        this.planIncluded = planIncluded;
-    }
-
-    public void setDurationMinutes(int durationMinutes) {
-        this.durationMinutes = durationMinutes; 
-    }
-
-    public void displaysTechnicalSheet (){
-        System.out.println("Nome do filme: " + name);
-        System.out.println("Ano de lançamento: " + releaseYear);
-    }
-
-
-    public void evaluate (double note){
-        addReviews += note;
-        totalReviews++;
-    }
-
-    public double takeMedia (){
-        return addReviews/ totalReviews;
-    }
-
 }
