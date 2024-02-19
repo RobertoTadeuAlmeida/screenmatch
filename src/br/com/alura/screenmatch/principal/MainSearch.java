@@ -38,7 +38,11 @@ public class MainSearch {
         //Titulo meuTitulo = gson.fromJson(json, Titulo.class);
         TituloOmdb meuTituloOmdb = gson.fromJson(json, TituloOmdb.class);
 
-        System.out.println("Titulo: " + meuTituloOmdb);
+        System.out.println(meuTituloOmdb);
+
+        Titulo meuTitulo=new Titulo(meuTituloOmdb);
+        System.out.println("Titulo ja convertido:");
+        System.out.println(meuTitulo);
 
     }
 }
