@@ -21,28 +21,38 @@ public class MainSearch {
         System.out.println("Qual filme você busca?");
         var search = scanner.nextLine();
         String endereco = "https://www.omdbapi.com/?t=" + search + "&apikey=" + key;
+        try {
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(endereco))
+                    .build();
+            HttpResponse<String> response = client
+                    .send(request, HttpResponse.BodyHandlers.ofString());
 
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(endereco))
-                .build();
-        HttpResponse<String> response = client
-                .send(request, HttpResponse.BodyHandlers.ofString());
+            String json = response.body();
+            System.out.println(json);
 
-        String json = response.body();
-        System.out.println(json);
+            Gson gson = new GsonBuilder()
+                    .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+                    .create();
+            TituloOmdb meuTituloOmdb = gson.fromJson(json, TituloOmdb.class);
 
-        Gson gson = new GsonBuilder()
-                .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
-                .create();
-        //Titulo meuTitulo = gson.fromJson(json, Titulo.class);
-        TituloOmdb meuTituloOmdb = gson.fromJson(json, TituloOmdb.class);
+            System.out.println(meuTituloOmdb);
 
-        System.out.println(meuTituloOmdb);
 
-        Titulo meuTitulo=new Titulo(meuTituloOmdb);
-        System.out.println("Titulo ja convertido:");
-        System.out.println(meuTitulo);
+            Titulo meuTitulo=new Titulo(meuTituloOmdb);
+            System.out.println("Titulo ja convertido:");
+            System.out.println(meuTitulo);
+        } catch (NumberFormatException e){
+            System.out.println("Aconteceu um erro!");
+            System.out.println(e.getMessage());
+
+        } finally {
+            System.out.println("O programa finalizou!");
+
+        }
+
+
 
     }
 }
