@@ -1,5 +1,6 @@
 package br.com.alura.screenmatch.principal;
 
+import br.com.alura.screenmatch.exeptions.ErroDeConversao;
 import br.com.alura.screenmatch.modelos.Titulo;
 import br.com.alura.screenmatch.modelos.TituloOmdb;
 import com.google.gson.FieldNamingPolicy;
@@ -20,7 +21,7 @@ public class MainSearch {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Qual filme você busca?");
         var search = scanner.nextLine();
-        String endereco = "https://www.omdbapi.com/?t=" + search + "&apikey=" + key;
+        String endereco = "https://www.omdbapi.com/?t=" + search.replace("", "+") + "&apikey=" + key;
         try {
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
@@ -40,18 +41,24 @@ public class MainSearch {
             System.out.println(meuTituloOmdb);
 
 
-            Titulo meuTitulo=new Titulo(meuTituloOmdb);
+            Titulo meuTitulo = new Titulo(meuTituloOmdb);
             System.out.println("Titulo ja convertido:");
             System.out.println(meuTitulo);
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             System.out.println("Aconteceu um erro!");
             System.out.println(e.getMessage());
 
-        } finally {
-            System.out.println("O programa finalizou!");
-
+        } catch (IllegalArgumentException e) {
+            System.out.println("Algum erro de argumento na busca, verifique o endereço");
+        }catch (ErroDeConversao e){
+            System.out.println(e.getMessage());
         }
 
+        finally {
+            System.out.println("O programa finalizou com erro!");
+
+        }
+        System.out.println("O programa finalizou corretamente.");
 
 
     }
